@@ -1,0 +1,4 @@
+env-secret.ts
+node_modules/
+logs/
+package-lock.json
