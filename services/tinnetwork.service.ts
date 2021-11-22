@@ -145,16 +145,20 @@ class TinNetworkService {
         console.log(`no cache or cache expired for address ${address} for chain ${chainId} for farm ${farm.shortName}`);
         // No assets fetched or expired assets, fetch them all for this chain.
         let farmValue = await this.fetchFarmAssets(address, farm, chainId);
-        console.log("farmValue", farmValue);
-        userFarm.assetsStaked = farmValue > 0;
-        userFarm.assets = {
-          updatedAt: Date.now() / 1000,
-          amount: farmValue
-        };
+        if (farmValue !== null) { // null probably means error. So we just don't remember this attempt and we'll try again next time
+          console.log("farmValue", farmValue);
+          userFarm.assetsStaked = farmValue > 0;
+          userFarm.assets = {
+            updatedAt: Date.now() / 1000,
+            amount: farmValue
+          };
+        }
       }
     }
 
-    addressCache.chains[chainId].updatedAt = Date.now() / 1000;
+    // If we really fetched all farms, we save this date as last updated date for this chainid
+    if (fetchAllFarms)
+      addressCache.chains[chainId].updatedAt = Date.now() / 1000;
 
     addressCache.fetchInProgress = false;
 
@@ -199,18 +203,30 @@ class TinNetworkService {
         let assets = await response.json() as TinAssetsResponse;
         //console.log("tin assets", assets);
 
-        let amount = assets.data.reduce((acc, asset) => acc + asset.amountPrice, 0);
+        // Normally only 1 item in "data" as we filtered with a single farm but let's loop.
+        let amount = 0;
+        for (let asset of assets.data) {
+          // In case of error, the amount can be null or undefined in tin api.
+          if (asset.amountPrice === undefined || asset.amountPrice === null) {
+            console.log("fetchFarmAssets KO - unknown amount price", asset.amountPrice);
+            return null;
+          }
+          else {
+            amount = amount + asset.amountPrice;
+          }
+        }
+
         return amount;
       }
       else {
         console.log("fetchFarmAssets KO", response.statusText);
-        return 0;
+        return null;
       }
     }
     catch (e) {
       console.error(e);
       console.log("fetchFarmAssets KO");
-      return 0;
+      return null;
     }
   }
 }

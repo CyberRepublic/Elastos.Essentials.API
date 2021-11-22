@@ -22,7 +22,7 @@ router.get('/assets/staking', async (req, res) => {
         return res.status(400).send('Missing parameter: address');
 
     if (!chainId)
-        return res.status(400).send('Missing parameter: chainId');
+        return res.status(400).send('Missing parameter: chainid');
 
     let stakedAssets = await defiService.getStakedAssets(address, chainId);
 
