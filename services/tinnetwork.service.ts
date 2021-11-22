@@ -129,24 +129,27 @@ class TinNetworkService {
 
     console.log("Number of farms to check: " + farmsForThisChain.length);
     for (let farm of farmsForThisChain) {
-      if (!(farm.shortName in userChains.farms)) {
-        userChains.farms[farm.shortName] = {
-          assetsStaked: false,
-          farm: farm.shortName,
-          assets: {
-            updatedAt: 0,
-            amount: 0
-          }
-        }
-      }
-
-      if (fetchAllFarms || (userChains.farms[farm.shortName].assetsStaked && userChains.farms[farm.shortName].assets.updatedAt + STAKED_ASSETS_ASSETS_CACHE_DURATION_SEC < (Date.now() / 1000))) {
-        let userFarm = userChains.farms[farm.shortName];
+      if (fetchAllFarms || !(farm.shortName in userChains.farms) || (userChains.farms[farm.shortName].assetsStaked && userChains.farms[farm.shortName].assets.updatedAt + STAKED_ASSETS_ASSETS_CACHE_DURATION_SEC < (Date.now() / 1000))) {
         console.log(`no cache or cache expired for address ${address} for chain ${chainId} for farm ${farm.shortName}`);
         // No assets fetched or expired assets, fetch them all for this chain.
         let farmValue = await this.fetchFarmAssets(address, farm, chainId);
         if (farmValue !== null) { // null probably means error. So we just don't remember this attempt and we'll try again next time
           console.log("farmValue", farmValue);
+
+          // Entry not existing, create it with placeholders firt
+          if (!(farm.shortName in userChains.farms)) {
+            userChains.farms[farm.shortName] = {
+              assetsStaked: false,
+              farm: farm.shortName,
+              assets: {
+                updatedAt: 0,
+                amount: 0
+              }
+            }
+          }
+
+          // Fill with real data
+          let userFarm = userChains.farms[farm.shortName];
           userFarm.assetsStaked = farmValue > 0;
           userFarm.assets = {
             updatedAt: Date.now() / 1000,
