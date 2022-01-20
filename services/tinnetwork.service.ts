@@ -39,12 +39,12 @@ class TinNetworkService {
         console.log(`Fetched ${this.tinFarms.length} TIN farms`);
       }
       else {
-        console.error("TIN Network farms list couldn't be fetched! Staking info won't be available!");
+        throw new Error("TIN Network farms list couldn't be fetched! Staking info won't be available!");
       }
     }
     catch (e) {
       console.error(e);
-      console.error("TIN Network farms list couldn't be fetched! Staking info won't be available!");
+      throw new Error("TIN Network farms list couldn't be fetched! Staking info won't be available!");
     }
   }
 
@@ -59,12 +59,12 @@ class TinNetworkService {
         console.log(`Fetched ${this.tinChains.length} TIN chains`);
       }
       else {
-        console.error("TIN Network chains list couldn't be fetched! Staking info won't be available!");
+        throw new Error("TIN Network chains list couldn't be fetched! Staking info won't be available!");
       }
     }
     catch (e) {
       console.error(e);
-      console.error("TIN Network chains list couldn't be fetched! Staking info won't be available!");
+      throw new Error("TIN Network chains list couldn't be fetched! Staking info won't be available!");
     }
   }
 
