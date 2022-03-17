@@ -196,7 +196,7 @@ class TinNetworkService {
     console.log(`Fetching staked assets for address ${address}, farm ${farm.shortName}, chain ${chainId}`);
 
     try {
-      let response = await fetch(`${SecretConfig.TinNetwork.apiEndpoint}/users/farms/${address}?chainId=${chainId}&farms=${farm.shortName}`, {
+      let response = await fetch(`${SecretConfig.TinNetwork.apiEndpoint}/users/farm/${address}?chainId=${chainId}&farmId=${farm.shortName}`, {
         headers: {
           "X-API-KEY": SecretConfig.TinNetwork.apiKey
         }
