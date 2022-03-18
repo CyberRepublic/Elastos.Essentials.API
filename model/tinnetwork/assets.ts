@@ -14,12 +14,13 @@ export type TinAsset = {
   amountPrice: number; // 6493.844381977916,
   pendingPrice: number; // 0, // ?
   borrowPrice: number; // 0, // ?
+  wallet: string;
 };
 
 export type TinAssetsResponse = {
-  statusCode: 200,
-  message: 'Done!',
-  data: TinAsset[]
+  statusCode: 200;
+  message: 'Done!';
+  data: TinAsset | TinAsset[];
 };
 
 /**

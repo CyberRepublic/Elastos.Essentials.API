@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import { SecretConfig } from "../config/env-secret";
-import { SummarizedStakedAssets, TinAssetsResponse } from "../model/tinnetwork/assets";
+import { SummarizedStakedAssets, TinAsset, TinAssetsResponse } from "../model/tinnetwork/assets";
 import { TinChain, TinChainsResponse } from "../model/tinnetwork/chains";
 import { TinFarm, TinFarmsResponse } from "../model/tinnetwork/farms";
 import { StakedAssetsCache } from "../model/tinnetwork/staking";
@@ -208,7 +208,17 @@ class TinNetworkService {
 
         // Normally only 1 item in "data" as we filtered with a single farm but let's loop.
         let amount = 0;
-        for (let asset of assets.data) {
+        let iterableAssets: TinAsset[] = [];
+
+        // Make an asset array out of a possible "array or object"
+        if (assets.data) { // Can be null, if Tin provides no info about a specific farm (eg: filda on ESC)
+          if (Array.isArray(assets.data))
+            iterableAssets = assets.data;
+          else
+            iterableAssets = [assets.data];
+        }
+
+        for (let asset of iterableAssets) {
           // In case of error, the amount can be null or undefined in tin api.
           if (asset.amountPrice === undefined || asset.amountPrice === null) {
             console.log("fetchFarmAssets KO - unknown amount price", asset.amountPrice);
