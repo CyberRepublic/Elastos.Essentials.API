@@ -14,17 +14,17 @@ const stakedAssetsCache: StakedAssetsCache = {}; // Empty cache when the service
  * TIN Network API documentation: https://openapi.tin.network/
  */
 class TinNetworkService {
-  private tinFarms: TinFarm[];
-  private tinChains: TinChain[];
+  private tinFarms: TinFarm[] = [];
+  private tinChains: TinChain[] = [];
 
   public async init() {
-    console.log("TIN Network service setup");
+    /* console.log("TIN Network service setup");
 
     // Load the whole list of available farms and save it. Updated only once per service start
     await Promise.all([
       this.fetchFarmsList(),
       this.fetchChainsList()
-    ]);
+    ]); */
   }
 
   private async fetchFarmsList(): Promise<void> {
