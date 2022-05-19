@@ -17,7 +17,7 @@ class TinNetworkService {
   private tinFarms: TinFarm[];
   private tinChains: TinChain[];
 
-  public async setup() {
+  public async init() {
     console.log("TIN Network service setup");
 
     // Load the whole list of available farms and save it. Updated only once per service start

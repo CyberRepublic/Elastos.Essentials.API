@@ -7,6 +7,8 @@ import logger from "morgan";
 import { AddressInfo } from "net";
 import traceLogger from "./logger";
 import router from "./routes/routes";
+import { dbService } from "./services/db.service";
+import { multiSigService } from "./services/multisig.service";
 import { defiService } from "./services/tinnetwork.service";
 
 class EssentialsAPIService {
@@ -25,8 +27,10 @@ class EssentialsAPIService {
 
         let dbg = debug('essentials-api:server');
 
-        // Setup the defi service
-        await defiService.setup();
+        // Setup services
+        await dbService.init();
+        await multiSigService.init();
+        await defiService.init();
 
         let port = '3060';
         app.set('port', port);
