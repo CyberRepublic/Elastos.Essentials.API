@@ -6,10 +6,11 @@ import http from "http";
 import logger from "morgan";
 import { AddressInfo } from "net";
 import traceLogger from "./logger";
-import router from "./routes/routes";
+import { multiSigService } from "./modules/multisig/multisig.service";
+import { defiService } from "./modules/staking/tinnetwork.service";
+import { updatesService } from "./modules/updates/updates.service";
+import router from "./router";
 import { dbService } from "./services/db.service";
-import { multiSigService } from "./services/multisig.service";
-import { defiService } from "./services/tinnetwork.service";
 
 class EssentialsAPIService {
     public async start() {
@@ -31,6 +32,7 @@ class EssentialsAPIService {
         await dbService.init();
         await multiSigService.init();
         await defiService.init();
+        await updatesService.init();
 
         let port = '3060';
         app.set('port', port);

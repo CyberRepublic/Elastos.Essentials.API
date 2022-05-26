@@ -23,7 +23,10 @@ export const accessForbiddenError = <T>(message: string): DataOrError<T> => {
     return error(ErrorType.FORBIDDEN_ACCESS, message);
 };
 
-export const invalidParamError = <T>(message: string): DataOrError<T> => {
+export const invalidParamError = <T>(message: string, e?: any): DataOrError<T> => {
+    if (e)
+        logger.warn(e);
+
     return error(ErrorType.INVALID_PARAMETER, message);
 };
 

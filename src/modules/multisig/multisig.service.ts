@@ -1,6 +1,6 @@
-import logger from "../logger";
-import { DataOrError, dataOrErrorData, serverError } from "../model/dataorerror";
-import { IMultiSigTransaction, MultiSigTransaction } from "../model/multisig/multisigtx";
+import logger from "../../logger";
+import { DataOrError, dataOrErrorData, serverError } from "../../model/dataorerror";
+import { IMultiSigTransaction, MultiSigTransaction } from "./multisigtx";
 
 /**
  * Service used to store and retrieved partly signed multi-signature wallet transactions.

@@ -1,9 +1,9 @@
 import fetch from "node-fetch";
-import { SecretConfig } from "../config/env-secret";
-import { SummarizedStakedAssets, TinAsset, TinAssetsResponse } from "../model/tinnetwork/assets";
-import { TinChain, TinChainsResponse } from "../model/tinnetwork/chains";
-import { TinFarm, TinFarmsResponse } from "../model/tinnetwork/farms";
-import { StakedAssetsCache } from "../model/tinnetwork/staking";
+import { SecretConfig } from "../../config/env-secret";
+import { SummarizedStakedAssets, TinAsset, TinAssetsResponse } from "./model/tinnetwork/assets";
+import { TinChain, TinChainsResponse } from "./model/tinnetwork/chains";
+import { TinFarm, TinFarmsResponse } from "./model/tinnetwork/farms";
+import { StakedAssetsCache } from "./model/tinnetwork/staking";
 
 const STAKED_ASSETS_FARMS_CACHE_DURATION_SEC = (24 * 60 * 60); // 1 day to re-check possible farms where an address has assets
 const STAKED_ASSETS_ASSETS_CACHE_DURATION_SEC = (10 * 60); // 10 minutes to refresh value of stakes assets fo a known farm

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node --loader ts-node/esm --experimental-specifier-resolution=node app.ts"
+    "start": "node --loader ts-node/esm --experimental-specifier-resolution=node src/app.ts"
   },
   "engines": {
     "node": ">=11.6.0"
@@ -23,6 +23,7 @@
     "morgan": "~1.9.1",
     "node-fetch": "^3.0.0",
     "node-schedule": "^2.0.0",
+    "simple-git": "^3.7.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 
-import { IMultiSigTransaction } from "../model/multisig/multisigtx";
+import { IMultiSigTransaction } from "./multisigtx";
 
 export type GetMultiSigTransactionResponse = IMultiSigTransaction;
 
