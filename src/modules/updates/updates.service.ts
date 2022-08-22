@@ -13,7 +13,7 @@ export type CheckedVersion = {
   shouldUpdate: boolean;
 }
 
-const FETCH_TAGS_INTERVAL_SEC = 60;
+const FETCH_TAGS_INTERVAL_SEC = 300;
 
 class UpdatesService {
   private latestReleaseTags: { [platform: string]: string } = {}; // eg: release-android-v2.5.4
@@ -27,40 +27,40 @@ class UpdatesService {
    * Fetches the most recent release tags from git, for the 2 platforms, and stores them locally.
    */
   private async fetchGitReleaseTags() {
-    let git = simpleGit(SecretConfig.Git.essentialsRepoPath);
+    try {
+      let git = simpleGit(SecretConfig.Git.essentialsRepoPath);
 
-    // Fetch latest tags
-    await git.fetch();
+      // Fetch latest tags
+      await git.fetch();
 
-    let tagsResult = await git.tags({
-      "--sort": "-creatordate"
-    });
-    if (!tagsResult)
-      throw new Error("Failed to fetch Essentials git tags");
+      let tagsResult = await git.tags({
+        "--sort": "-creatordate"
+      });
+      if (!tagsResult)
+        throw new Error("Failed to fetch Essentials git tags");
 
-    // Filter tags
-    let tags = tagsResult.all.filter(t => t.startsWith("release-"));
-    logger.info(`Found ${tags.length} release tags`);
+      // Filter tags
+      let tags = tagsResult.all.filter(t => t.startsWith("release-"));
+      logger.info(`Found ${tags.length} release tags`);
 
-    // Find latest tags per platform
-    this.latestReleaseTags["android"] = tags.find(t => t.startsWith("release-android"));
-    this.latestReleaseTags["ios"] = tags.find(t => t.startsWith("release-ios"));
+      // Find latest tags per platform
+      this.latestReleaseTags["android"] = tags.find(t => t.startsWith("release-android"));
+      this.latestReleaseTags["ios"] = tags.find(t => t.startsWith("release-ios"));
 
-    // Compute the numeric versions
-    this.latestReleaseVersions["android"] = this.toNumericVersion(this.tagToVersion(this.latestReleaseTags["android"]));
-    this.latestReleaseVersions["ios"] = this.toNumericVersion(this.tagToVersion(this.latestReleaseTags["ios"]));
+      // Compute the numeric versions
+      this.latestReleaseVersions["android"] = this.toNumericVersion(this.tagToVersion(this.latestReleaseTags["android"]));
+      this.latestReleaseVersions["ios"] = this.toNumericVersion(this.tagToVersion(this.latestReleaseTags["ios"]));
 
-    logger.info(`Latest android tag is: ${this.latestReleaseTags["android"]}`);
-    logger.info(`Latest iOS tag is: ${this.latestReleaseTags["ios"]}`);
+      logger.info(`Latest android tag is: ${this.latestReleaseTags["android"]}`);
+      logger.info(`Latest iOS tag is: ${this.latestReleaseTags["ios"]}`);
+    }
+    catch (e) {
+      logger.warn("Git fetch tags error", e);
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     setTimeout(async () => {
-      try {
-        await this.fetchGitReleaseTags();
-      }
-      catch (e) {
-        logger.warn("Git fetch tags error", e);
-      }
+      await this.fetchGitReleaseTags();
     }, FETCH_TAGS_INTERVAL_SEC * 1000);
   }
 
