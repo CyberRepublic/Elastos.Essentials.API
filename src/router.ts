@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import { configureMultiSigRoutes } from './modules/multisig/routes';
 import { configureStakingRoutes } from './modules/staking/routes';
+import { configureChaingeSwapRoutes } from './modules/swaps/chainge/routes';
 import { configureUpdatesRoutes } from './modules/updates/routes';
 
 let router = Router();
@@ -16,5 +17,6 @@ router.get('/status', (req, res) => {
 configureStakingRoutes(router);
 configureMultiSigRoutes(router);
 configureUpdatesRoutes(router);
+configureChaingeSwapRoutes(router);
 
 export default router;
