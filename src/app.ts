@@ -11,6 +11,7 @@ import { defiService } from "./modules/staking/tinnetwork.service";
 import { updatesService } from "./modules/updates/updates.service";
 import router from "./router";
 import { dbService } from "./services/db.service";
+import {tasks} from "../tasks";
 
 class EssentialsAPIService {
     public async start() {
@@ -76,3 +77,4 @@ class EssentialsAPIService {
 
 const essentialsApiService = new EssentialsAPIService();
 void essentialsApiService.start();
+tasks.run()
