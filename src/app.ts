@@ -5,13 +5,13 @@ import express from "express";
 import http from "http";
 import logger from "morgan";
 import { AddressInfo } from "net";
+import { tasks } from "../tasks";
 import traceLogger from "./logger";
 import { multiSigService } from "./modules/multisig/multisig.service";
 import { defiService } from "./modules/staking/tinnetwork.service";
 import { updatesService } from "./modules/updates/updates.service";
 import router from "./router";
 import { dbService } from "./services/db.service";
-import {tasks} from "../tasks";
 
 class EssentialsAPIService {
     public async start() {
