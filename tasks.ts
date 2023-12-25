@@ -1,8 +1,22 @@
 import mongoose from "mongoose";
+import fetch from "node-fetch";
 import { SecretConfig } from "./src/config/env-secret";
 
 export type ChainIdList = {
   [chain: string]: number;
+}
+
+//https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyListingsLatest
+export type CMCResponse = {
+  status: {
+    timestamp: string, //"2023-12-04T03:49:28.665Z",
+    error_code: number,
+    error_message: string,
+    elapsed: number,
+    credit_count: number,
+    notice: string
+  }
+  data: any // TODO
 }
 
 // Token market cap rank <= 130
@@ -32,6 +46,7 @@ const tokens2: ChainIdList = {
   CELO: 5567,
 };
 
+// TODO: move to modules/price
 class Tasks {
     run() {
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -57,8 +72,7 @@ class Tasks {
             'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=130',
             { method: 'get', headers },
         );
-        const result = await res.json();
-
+        const result = await res.json() as CMCResponse;
         const record = { timestamp: Date.parse(result.status.timestamp) } as any;
         result.data.forEach((item: { symbol: string | number; id: any; quote: { USD: { price: any; }; }; }) => {
             if (tokens1[item.symbol] === item.id) {
@@ -76,7 +90,7 @@ class Tasks {
         const resOther = await fetch(
             getTokensPriceUrl, { method: 'get', headers },
         );
-        const resultOther = await resOther.json();
+        const resultOther = await resOther.json()  as CMCResponse;
 
         for (const i in tokens2) {
           if (resultOther.data[tokens2[i]]) {
@@ -106,5 +120,5 @@ class Tasks {
     }
 }
 
-export const tokensPriceSchema = new mongoose.Schema({timestamp:Number,BTC:Number,ETH:Number,BNB:Number,TRX:Number,AVAX:Number,MATIC:Number,CRO:Number,FTM:Number,KAVA:Number,BTT:Number,HT:Number,EVMOS:Number,FSN:Number,ELA:Number,TLOS:Number,FUSE:Number,xDAI:Number,IOTX:Number,CELO:Number});
+export const tokensPriceSchema = new mongoose.Schema({timestamp:Number,BTC:Number,ETH:Number,BNB:Number,TRX:Number,AVAX:Number,MATIC:Number,CRO:Number,FTM:Number,KAVA:Number,BTT:Number,HT:Number,EVMOS:Number,FSN:Number,ELA:Number,TLOS:Number,FUSE:Number,xDAI:Number,IOTX:Number,CELO:Number}, { versionKey: false });
 export const tasks = new Tasks();
