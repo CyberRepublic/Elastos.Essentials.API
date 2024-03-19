@@ -44,6 +44,7 @@ const tokens2: ChainIdList = {
   xDAI: 8635,
   IOTX: 2777,
   CELO: 5567,
+  USDT: 825
 };
 
 // TODO: move to modules/price
@@ -120,5 +121,5 @@ class Tasks {
     }
 }
 
-export const tokensPriceSchema = new mongoose.Schema({timestamp:Number,BTC:Number,ETH:Number,BNB:Number,TRX:Number,AVAX:Number,MATIC:Number,CRO:Number,FTM:Number,KAVA:Number,BTT:Number,HT:Number,EVMOS:Number,FSN:Number,ELA:Number,TLOS:Number,FUSE:Number,xDAI:Number,IOTX:Number,CELO:Number}, { versionKey: false });
+export const tokensPriceSchema = new mongoose.Schema({timestamp:Number,BTC:Number,ETH:Number,BNB:Number,TRX:Number,AVAX:Number,MATIC:Number,CRO:Number,FTM:Number,KAVA:Number,BTT:Number,HT:Number,EVMOS:Number,FSN:Number,ELA:Number,TLOS:Number,FUSE:Number,xDAI:Number,IOTX:Number,CELO:Number, USDT:Number}, { versionKey: false });
 export const tasks = new Tasks();
