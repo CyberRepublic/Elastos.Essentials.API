@@ -23,11 +23,10 @@ export type CMCResponse = {
 const tokens1: ChainIdList = {
   BTC: 1,
   BNB: 1839,
-  HT: 2502,
   AVAX: 5805,
   ETH: 1027,
   FTM: 3513,
-  MATIC: 3890,
+  POL: 28321,
   CRO: 3635,
   KAVA: 4846,
   TRX: 1958,
@@ -44,7 +43,8 @@ const tokens2: ChainIdList = {
   xDAI: 8635,
   IOTX: 2777,
   CELO: 5567,
-  USDT: 825
+  USDT: 825,
+  HT: 2502
 };
 
 // TODO: move to modules/price
